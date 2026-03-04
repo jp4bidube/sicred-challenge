@@ -15,6 +15,11 @@
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/vote-consumer" />
         <option name="gradleJvm" value="21" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/vote-consumer" />
+          </set>
+        </option>
       </GradleProjectSettings>
     </option>
   </component>

@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/sicred.iml" filepath="$PROJECT_DIR$/sicred.iml" />
-      <module fileurl="file://$PROJECT_DIR$/vote-consumer/vote-consumer.iml" filepath="$PROJECT_DIR$/vote-consumer/vote-consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/vote-consumer.main.iml" filepath="$PROJECT_DIR$/.idea/modules/vote-consumer.main.iml" />
     </modules>
   </component>
 </project>

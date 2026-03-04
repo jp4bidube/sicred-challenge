@@ -44,7 +44,7 @@ services:
       KAFKA_NUM_PARTITIONS: 1
 
     volumes:
-      - ./docker/kafka_data:/var/lib/kafka/data
+      - ./kafka_data:/var/lib/kafka/data
 
 #  core-api:
 #    build:
@@ -54,6 +54,18 @@ services:
 #      - "8080:8080"
 #    environment:
 #      - SPRING_DATA_MONGODB_URI=mongodb://admin:123@mongodb:27017/sicred?authSource=admin
+#      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+#    depends_on:
+#      - mongodb
+#      - kafka
+#
+#  vote-consumer:
+#    build:
+#      context: ../vote-consumer
+#      dockerfile: Dockerfile
+#    environment:
+#      - SPRING_DATA_MONGODB_URI=mongodb://admin:123@mongodb:27017/sicred?authSource=admin
+#      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
 #    depends_on:
 #      - mongodb
 #      - kafka
