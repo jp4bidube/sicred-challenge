@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/sicred.iml" filepath="$PROJECT_DIR$/sicred.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vote-consumer/vote-consumer.iml" filepath="$PROJECT_DIR$/vote-consumer/vote-consumer.iml" />
     </modules>
   </component>
 </project>
