@@ -13,8 +13,6 @@ public interface AgendaMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "status", constant = "CREATED")
-    @Mapping(target = "votesYes", constant = "0")
-    @Mapping(target = "votesNo", constant = "0")
     @Mapping(target = "sessionEndsAt", ignore = true)
     Agenda toEntity(CreateAgendaRequestDTO request);
 }

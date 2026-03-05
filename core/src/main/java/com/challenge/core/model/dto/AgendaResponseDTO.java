@@ -19,8 +19,6 @@ public class AgendaResponseDTO {
     private String title;
     private AgendaStatus status;
     private LocalDateTime sessionEndsAt;
-    private Integer votesYes;
-    private Integer votesNo;
 
     public static AgendaResponseDTO fromEntity(Agenda agenda) {
         return AgendaResponseDTO.builder()
@@ -28,8 +26,6 @@ public class AgendaResponseDTO {
                 .title(agenda.getTitle())
                 .status(agenda.getStatus())
                 .sessionEndsAt(agenda.getSessionEndsAt())
-                .votesYes(agenda.getVotesYes())
-                .votesNo(agenda.getVotesNo())
                 .build();
     }
 }

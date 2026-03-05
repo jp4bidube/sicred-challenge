@@ -33,9 +33,7 @@ public class AgendaController {
     @GetMapping("/{id}")
     @Operation(summary = "Buscar pauta por ID", description = "Retorna os detalhes de uma pauta específica")
     public ResponseEntity<AgendaResponseDTO> findById(@PathVariable String id) {
-        return agendaService.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(agendaService.findById(id));
     }
 
     @GetMapping
@@ -47,8 +45,6 @@ public class AgendaController {
     @PostMapping("/{id}/open")
     @Operation(summary = "Abrir sessão de votação", description = "Abre a sessão de votação para uma pauta por um tempo determinado (padrão 1 minuto)")
     public ResponseEntity<AgendaResponseDTO> openSession(@PathVariable String id, @RequestParam(required = false) Long minutes) {
-        return agendaService.openSession(id, minutes)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        return ResponseEntity.ok(agendaService.openSession(id, minutes));
     }
 }

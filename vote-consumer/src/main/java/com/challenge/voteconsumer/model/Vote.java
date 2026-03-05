@@ -9,13 +9,15 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Document(collection = "votes")
 @CompoundIndexes({
-    @CompoundIndex(name = "unique_vote_per_agenda", def = "{'agendaId': 1, 'associateId': 1}", unique = true)
+        @CompoundIndex(name = "unique_vote_per_agenda", def = "{'agendaId': 1, 'associateId': 1}", unique = true)
 })
 public class Vote {
 
@@ -24,4 +26,5 @@ public class Vote {
     private String agendaId;
     private String associateId;
     private VoteChoice choice;
+    private LocalDateTime votedAt;
 }

@@ -1,28 +1,29 @@
 package com.challenge.core.services;
 
+import com.challenge.core.exception.BadRequestException;
+import com.challenge.core.exception.NotFoundException;
 import com.challenge.core.mappers.AgendaMapper;
 import com.challenge.core.model.Agenda;
 import com.challenge.core.model.AgendaStatus;
 import com.challenge.core.model.dto.AgendaResponseDTO;
 import com.challenge.core.model.dto.CreateAgendaRequestDTO;
 import com.challenge.core.repositories.AgendaRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class AgendaService {
 
     private final AgendaRepository agendaRepository;
     private final AgendaMapper agendaMapper;
-
-    public AgendaService(AgendaRepository agendaRepository, AgendaMapper agendaMapper) {
-        this.agendaRepository = agendaRepository;
-        this.agendaMapper = agendaMapper;
-    }
+    private final StringRedisTemplate redisTemplate;
 
     public AgendaResponseDTO create(CreateAgendaRequestDTO request) {
         Agenda agenda = agendaMapper.toEntity(request);
@@ -30,9 +31,10 @@ public class AgendaService {
         return agendaMapper.toResponseDTO(savedAgenda);
     }
 
-    public Optional<AgendaResponseDTO> findById(String id) {
+    public AgendaResponseDTO findById(String id) {
         return agendaRepository.findById(id)
-                .map(agendaMapper::toResponseDTO);
+                .map(agendaMapper::toResponseDTO)
+                .orElseThrow(() -> new NotFoundException("Agenda not found with id: " + id));
     }
 
     public List<AgendaResponseDTO> findAll() {
@@ -41,17 +43,23 @@ public class AgendaService {
                 .collect(Collectors.toList());
     }
 
-    public Optional<AgendaResponseDTO> openSession(String id, Long minutes) {
-        return agendaRepository.findById(id)
-                .map(agenda -> {
-                    if (agenda.getStatus() == AgendaStatus.CREATED) {
-                        agenda.setStatus(AgendaStatus.OPEN);
-                        agenda.setSessionEndsAt(LocalDateTime.now().plusMinutes(minutes != null ? minutes : 1));
-                        return agendaRepository.save(agenda);
-                    }
-                    return agenda;
-                })
-                .map(agendaMapper::toResponseDTO);
+    public AgendaResponseDTO openSession(String id, Long minutes) {
+        Agenda agenda = agendaRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Agenda not found with id: " + id));
+
+        if (agenda.getStatus() == AgendaStatus.OPEN) {
+            throw new BadRequestException("Agenda is already open");
+        }
+
+        long durationMinutes = minutes != null && minutes > 0 ? minutes : 1;
+        agenda.setStatus(AgendaStatus.OPEN);
+        agenda.setSessionEndsAt(LocalDateTime.now().plusMinutes(durationMinutes));
+        agenda = agendaRepository.save(agenda);
+
+        String key = "agenda:" + id + ":status";
+        redisTemplate.opsForValue().set(key, "OPEN", durationMinutes, TimeUnit.MINUTES);
+        
+        return agendaMapper.toResponseDTO(agenda);
     }
 
     public List<Agenda> findOpenSessionsExpired() {

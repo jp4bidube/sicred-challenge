@@ -7,6 +7,11 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=123
 
+  redis:
+    image: redis:alpine
+    ports:
+      - 6379:6379
+
   kafka:
     container_name: kafka
     image: apache/kafka:latest
@@ -55,9 +60,12 @@ services:
 #    environment:
 #      - SPRING_DATA_MONGODB_URI=mongodb://admin:123@mongodb:27017/sicred?authSource=admin
 #      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+#      - SPRING_DATA_REDIS_HOST=redis
+#      - SPRING_DATA_REDIS_PORT=6379
 #    depends_on:
 #      - mongodb
 #      - kafka
+#      - redis
 #
 #  vote-consumer:
 #    build:

@@ -21,13 +21,9 @@ public class Agenda {
     private String title;
     private AgendaStatus status;
     private LocalDateTime sessionEndsAt;
-    private Integer votesYes;
-    private Integer votesNo;
 
     public Agenda(String title) {
         this.title = title;
         this.status = AgendaStatus.CREATED;
-        this.votesYes = 0;
-        this.votesNo = 0;
     }
 }

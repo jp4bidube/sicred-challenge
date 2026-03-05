@@ -1,6 +1,7 @@
 package com.challenge.core.controllers;
 
 import com.challenge.core.model.dto.VoteRequestDTO;
+import com.challenge.core.model.dto.VoteResponseDTO;
 import com.challenge.core.services.VoteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,8 +22,8 @@ public class VoteController {
 
     @PostMapping
     @Operation(summary = "Registrar voto", description = "Envia um voto para processamento assíncrono via Kafka")
-    public ResponseEntity<Void> registerVote(@PathVariable String agendaId, @RequestBody VoteRequestDTO request) {
-        voteService.registerVote(agendaId, request);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    public ResponseEntity<VoteResponseDTO> registerVote(@PathVariable String agendaId, @RequestBody VoteRequestDTO request) {
+        VoteResponseDTO response = voteService.registerVote(agendaId, request);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(response);
     }
 }
