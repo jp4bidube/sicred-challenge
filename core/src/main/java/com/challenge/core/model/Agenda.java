@@ -21,9 +21,4 @@ public class Agenda {
     private String title;
     private AgendaStatus status;
     private LocalDateTime sessionEndsAt;
-
-    public Agenda(String title) {
-        this.title = title;
-        this.status = AgendaStatus.CREATED;
-    }
 }

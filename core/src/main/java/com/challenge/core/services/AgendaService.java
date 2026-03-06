@@ -51,6 +51,10 @@ public class AgendaService {
             throw new BadRequestException("Agenda is already open");
         }
 
+        if (agenda.getStatus() == AgendaStatus.CLOSED) {
+            throw new BadRequestException("Agenda is already close");
+        }
+
         long durationMinutes = minutes != null && minutes > 0 ? minutes : 1;
         agenda.setStatus(AgendaStatus.OPEN);
         agenda.setSessionEndsAt(LocalDateTime.now().plusMinutes(durationMinutes));
