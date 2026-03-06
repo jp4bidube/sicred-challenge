@@ -13,6 +13,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -67,6 +68,6 @@ public class AgendaService {
     }
 
     public List<Agenda> findOpenSessionsExpired() {
-        return agendaRepository.findByStatusAndSessionEndsAtBefore(AgendaStatus.OPEN, LocalDateTime.now());
+        return agendaRepository.findByStatusAndSessionEndsAtBefore(AgendaStatus.OPEN, LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
     }
 }
