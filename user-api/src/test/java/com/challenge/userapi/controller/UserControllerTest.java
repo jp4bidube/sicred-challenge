@@ -30,7 +30,7 @@ class UserControllerTest {
 
         when(userService.validateCpf(cpf)).thenReturn(statusDTO);
 
-        mockMvc.perform(get("/users/{cpf}", cpf))
+        mockMvc.perform(get("/v1/users/{cpf}", cpf))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.status").value("ABLE_TO_VOTE"));
     }
@@ -42,7 +42,7 @@ class UserControllerTest {
 
         when(userService.validateCpf(cpf)).thenReturn(statusDTO);
 
-        mockMvc.perform(get("/users/{cpf}", cpf))
+        mockMvc.perform(get("/v1/users/{cpf}", cpf))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.status").value("UNABLE_TO_VOTE"));
     }

@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/agendas/{agendaId}/votes")
+@RequestMapping("/v1/agendas/{agendaId}/votes")
 @Tag(name = "Votação", description = "Registro de votos nas pautas")
 public class VoteController {
 

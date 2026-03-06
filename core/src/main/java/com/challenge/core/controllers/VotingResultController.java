@@ -1,6 +1,5 @@
 package com.challenge.core.controllers;
 
-import com.challenge.core.exception.ErrorResponse;
 import com.challenge.core.exception.NotFoundException;
 import com.challenge.core.model.VotingResult;
 import com.challenge.core.repositories.VotingResultRepository;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/agendas/{agendaId}/result")
+@RequestMapping("/v1/agendas/{agendaId}/result")
 @Tag(name = "Resultado", description = "Consulta de resultados das votações")
 @AllArgsConstructor
 public class VotingResultController {

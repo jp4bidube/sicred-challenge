@@ -17,7 +17,7 @@ def wait_for_api():
     retries = 30
     for i in range(retries):
         try:
-            response = requests.get(f"{API_URL}/agendas")
+            response = requests.get(f"{API_URL}/v1/agendas")
             if response.status_code == 200:
                 print("API is ready!")
                 return
@@ -44,7 +44,7 @@ def generate_cpf():
 
 def create_agenda():
     print("Creating Agenda...")
-    response = requests.post(f"{API_URL}/agendas", json={"title": f"Load Test Agenda {time.time()}"})
+    response = requests.post(f"{API_URL}/v1/agendas", json={"title": f"Load Test Agenda {time.time()}"})
     if response.status_code == 201:
         agenda = response.json()
         print(f"Agenda Created: {agenda['id']} - {agenda['title']}")
@@ -55,7 +55,7 @@ def create_agenda():
 
 def open_session(agenda_id):
     print(f"Opening Session for Agenda {agenda_id}...")
-    response = requests.post(f"{API_URL}/agendas/{agenda_id}/open?minutes=1")
+    response = requests.post(f"{API_URL}/v1/agendas/{agenda_id}/open?minutes=1")
     if response.status_code == 200:
         print("Session Opened successfully!")
     else:
@@ -72,7 +72,7 @@ def cast_vote(agenda_id):
 
     try:
         start_time = time.time()
-        response = requests.post(f"{API_URL}/agendas/{agenda_id}/votes", json=payload)
+        response = requests.post(f"{API_URL}/v1/agendas/{agenda_id}/votes", json=payload)
         elapsed = time.time() - start_time
 
         return {
@@ -119,7 +119,7 @@ def run_load_test():
                 print(r)
                 break
 
-    print(f"\nCheck results at: http:localhost:8080/agendas/{agenda_id}/result (wait for session to close)")
+    print(f"\nCheck results at: {API_URL}/v1/agendas/{agenda_id}/result (wait for session to close)")
 
 if __name__ == "__main__":
     run_load_test()

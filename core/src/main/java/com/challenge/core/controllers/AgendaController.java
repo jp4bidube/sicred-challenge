@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/agendas")
+@RequestMapping("/v1/agendas")
 @Tag(name = "Agenda", description = "Gerenciamento de Pautas")
 public class AgendaController {
 

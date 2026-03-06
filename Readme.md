@@ -55,7 +55,7 @@ A aplicação foi contentorizada para facilitar a execução. Todo o ambiente (b
 4. **Verifique o Resultado:**
    Após o término da sessão de votação (1 minuto), o sistema consolidará os votos automaticamente. Você pode consultar o resultado final acessando a URL exibida no final do log do teste de carga, por exemplo:
    
-   `http://localhost:8080/agendas/{id-da-pauta}/result`
+   `http://localhost:8080/v1/agendas/{id-da-pauta}/result`
 
 ## 📚 Documentação da API
 
@@ -83,7 +83,7 @@ docker compose down -v
 - **Tarefa Bônus 1 (Integração com sistemas externos):** A `user-api` valida se o CPF é válido e retorna se o associado está apto a votar (`ABLE_TO_VOTE`) ou não (`UNABLE_TO_VOTE`). O `vote-consumer` consulta essa API antes de computar o voto.
 - **Tarefa Bônus 2 (Mensageria):** O sistema utiliza Kafka para processamento assíncrono de votos. A API `core` apenas recebe o voto e o envia para uma fila. O `vote-consumer` processa a fila, valida e salva no banco.
 - **Tarefa Bônus 3 (Performance):** Utilização de Redis para validação rápida de status da sessão de votação e índices compostos no MongoDB para garantir unicidade do voto sem lock de tabela.
-- **Tarefa Bônus 4 (Versionamento):** A API utiliza versionamento semântico e boas práticas de REST.
+- **Tarefa Bônus 4 (Versionamento):** A API utiliza versionamento semântico (`/v1/...`) e boas práticas de REST.
 
 ---
 Desenvolvido por **João Pedro (jp4bidube)**
