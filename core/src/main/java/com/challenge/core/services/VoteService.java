@@ -1,9 +1,9 @@
 package com.challenge.core.services;
 
 import com.challenge.core.exception.BadRequestException;
-import com.challenge.core.model.Vote;
 import com.challenge.core.model.dto.VoteRequestDTO;
 import com.challenge.core.model.dto.VoteResponseDTO;
+import com.challenge.core.model.events.RegisterVoteEvent;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -29,20 +29,20 @@ public class VoteService {
             throw new BadRequestException("Voting session is closed or does not exist for agenda: " + agendaId);
         }
 
-        Vote vote = Vote.builder()
+        RegisterVoteEvent event = RegisterVoteEvent.builder()
                 .agendaId(agendaId)
                 .associateId(request.getAssociateId())
                 .choice(request.getChoice())
                 .votedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .build();
 
-        voteProducer.sendVote(vote);
+        voteProducer.sendVote(event);
 
         return VoteResponseDTO.builder()
-                .agendaId(vote.getAgendaId())
-                .associateId(vote.getAssociateId())
-                .choice(vote.getChoice())
-                .votedAt(vote.getVotedAt())
+                .agendaId(event.getAgendaId())
+                .associateId(event.getAssociateId())
+                .choice(event.getChoice())
+                .votedAt(event.getVotedAt())
                 .build();
     }
 }

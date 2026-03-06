@@ -1,5 +1,6 @@
-package com.challenge.core.model;
+package com.challenge.core.model.events;
 
+import com.challenge.core.model.VoteChoice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +12,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Vote {
-
-    private String id;
+public class RegisterVoteEvent {
     private String agendaId;
     private String associateId;
     private VoteChoice choice;

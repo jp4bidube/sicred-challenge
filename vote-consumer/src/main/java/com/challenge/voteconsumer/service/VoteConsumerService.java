@@ -28,7 +28,7 @@ public class VoteConsumerService {
             log.warn("Duplicate vote detected for agenda {} and associate {}. Ignoring.", vote.getAgendaId(), vote.getAssociateId());
         } catch (Exception e) {
             log.error("Error saving vote: {}", vote, e);
-            // In a real scenario, you might want to send this to a Dead Letter Queue (DLQ)
+            throw e;
         }
     }
 }

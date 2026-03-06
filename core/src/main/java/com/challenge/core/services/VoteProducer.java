@@ -1,6 +1,6 @@
 package com.challenge.core.services;
 
-import com.challenge.core.model.Vote;
+import com.challenge.core.model.events.RegisterVoteEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -16,12 +16,12 @@ public class VoteProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendVote(Vote vote) {
+    public void sendVote(RegisterVoteEvent event) {
         try {
-            this.kafkaTemplate.send("votes", vote);
-            log.info("Vote sent successfully: {}", vote);
+            this.kafkaTemplate.send("votes", event);
+            log.info("Vote event sent successfully: {}", event);
         } catch (Exception e) {
-            log.error("Error sending vote: {}", vote, e);
+            log.error("Error sending vote event: {}", event, e);
         }
     }
 }

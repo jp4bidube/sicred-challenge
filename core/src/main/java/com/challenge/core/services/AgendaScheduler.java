@@ -20,6 +20,7 @@ public class AgendaScheduler {
     private final AgendaService agendaService;
     private final AgendaRepository agendaRepository;
     private final StringRedisTemplate redisTemplate;
+    private final AgendaEventProducer agendaEventProducer;
 
     @Scheduled(fixedRateString = "${agenda.scheduler.interval}")
     public void closeExpiredSessions() {
@@ -39,6 +40,8 @@ public class AgendaScheduler {
 
                 String key = "agenda:" + agenda.getId() + ":status";
                 redisTemplate.delete(key);
+
+                agendaEventProducer.sendAgendaClosedEvent(agenda.getId());
                 
                 log.info("Session closed successfully for agenda: {}", agenda.getId());
             } catch (Exception e) {
