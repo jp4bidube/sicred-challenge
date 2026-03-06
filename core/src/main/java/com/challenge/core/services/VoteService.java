@@ -7,7 +7,7 @@ import com.challenge.core.model.events.RegisterVoteEvent;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 
 @Service
@@ -33,7 +33,7 @@ public class VoteService {
                 .agendaId(agendaId)
                 .associateId(request.getAssociateId())
                 .choice(request.getChoice())
-                .votedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")))
+                .votedAt(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")))
                 .build();
 
         voteProducer.sendVote(event);

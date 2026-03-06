@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.index.CompoundIndex;
 import org.springframework.data.mongodb.core.index.CompoundIndexes;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -26,5 +26,5 @@ public class Vote {
     private String agendaId;
     private String associateId;
     private VoteChoice choice;
-    private LocalDateTime votedAt;
+    private OffsetDateTime votedAt;
 }

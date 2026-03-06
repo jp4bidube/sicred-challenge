@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -53,12 +53,12 @@ public class AgendaService {
         }
 
         if (agenda.getStatus() == AgendaStatus.CLOSED) {
-            throw new BadRequestException("Agenda is already close");
+            throw new BadRequestException("Agenda is already closed");
         }
 
         long durationMinutes = minutes != null && minutes > 0 ? minutes : 1;
         agenda.setStatus(AgendaStatus.OPEN);
-        agenda.setSessionEndsAt(LocalDateTime.now().plusMinutes(durationMinutes));
+        agenda.setSessionEndsAt(OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")).plusMinutes(durationMinutes));
         agenda = agendaRepository.save(agenda);
 
         String key = "agenda:" + id + ":status";
@@ -68,6 +68,6 @@ public class AgendaService {
     }
 
     public List<Agenda> findOpenSessionsExpired() {
-        return agendaRepository.findByStatusAndSessionEndsAtBefore(AgendaStatus.OPEN, LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+        return agendaRepository.findByStatusAndSessionEndsAtBefore(AgendaStatus.OPEN, OffsetDateTime.now(ZoneId.of("America/Sao_Paulo")));
     }
 }

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -16,5 +16,5 @@ public class VoteResponseDTO {
     private String agendaId;
     private String associateId;
     private VoteChoice choice;
-    private LocalDateTime votedAt;
+    private OffsetDateTime votedAt;
 }

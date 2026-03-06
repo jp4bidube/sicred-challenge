@@ -15,8 +15,6 @@ ENV TZ=America/Sao_Paulo
 
 WORKDIR /app
 
-COPY --from=builder /app/build/libs/user-api-0.0.1-SNAPSHOT.jar ./app.jar
-
-EXPOSE 8082
+COPY --from=builder /app/build/libs/vote-consumer-0.0.1-SNAPSHOT.jar ./app.jar
 
 ENTRYPOINT ["java", "-Duser.timezone=America/Sao_Paulo", "-jar", "app.jar"]

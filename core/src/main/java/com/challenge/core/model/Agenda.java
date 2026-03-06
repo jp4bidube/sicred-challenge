@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Data
 @Builder
@@ -20,5 +20,5 @@ public class Agenda {
     private String id;
     private String title;
     private AgendaStatus status;
-    private LocalDateTime sessionEndsAt;
+    private OffsetDateTime sessionEndsAt;
 }

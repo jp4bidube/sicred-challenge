@@ -6,6 +6,7 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
       - MONGO_INITDB_ROOT_PASSWORD=123
+      - TZ=America/Sao_Paulo
 
   redis:
     image: redis:alpine
@@ -63,6 +64,7 @@ services:
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
       - USER_API_URL=http://user-api:8082
+      - TZ=America/Sao_Paulo
     depends_on:
       - mongodb
       - kafka
