@@ -1,5 +1,7 @@
 # Sicredi Challenge - Sistema de Votação
 
+![Arquitetura do Sistema](docs/img.png)
+
 Este projeto é uma solução para o desafio técnico de backend, que consiste num sistema de gestão de pautas e sessões de votação para associados.
 
 O sistema foi desenvolvido utilizando **Java** e é composto por uma arquitetura distribuída/microsserviços, dividida nos seguintes módulos principais:
