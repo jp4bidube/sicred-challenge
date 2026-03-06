@@ -16,6 +16,9 @@
       <module name="core" options="-parameters" />
       <module name="core.main" options="-parameters" />
       <module name="core.test" options="-parameters" />
+      <module name="user-api" options="-parameters" />
+      <module name="user-api.main" options="-parameters" />
+      <module name="user-api.test" options="-parameters" />
       <module name="vote-consumer" options="-parameters" />
       <module name="vote-consumer.main" options="-parameters" />
       <module name="vote-consumer.test" options="-parameters" />
