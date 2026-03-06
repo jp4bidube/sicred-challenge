@@ -17,7 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -51,9 +51,8 @@ class AgendaServiceTest {
     @Test
     void create_ShouldReturnAgendaResponseDTO() {
         CreateAgendaRequestDTO request = new CreateAgendaRequestDTO("Test Agenda");
-        Agenda agenda = new Agenda("Test Agenda");
-        Agenda savedAgenda = new Agenda("Test Agenda");
-        savedAgenda.setId("1");
+        Agenda agenda = Agenda.builder().title("Test Agenda").status(AgendaStatus.CREATED).build();
+        Agenda savedAgenda = Agenda.builder().id("1").title("Test Agenda").status(AgendaStatus.CREATED).build();
         AgendaResponseDTO responseDTO = AgendaResponseDTO.builder().id("1").title("Test Agenda").build();
 
         when(agendaMapper.toEntity(request)).thenReturn(agenda);
@@ -71,8 +70,7 @@ class AgendaServiceTest {
     @Test
     void findById_ShouldReturnAgenda_WhenExists() {
         String id = "1";
-        Agenda agenda = new Agenda("Test Agenda");
-        agenda.setId(id);
+        Agenda agenda = Agenda.builder().id(id).title("Test Agenda").build();
         AgendaResponseDTO responseDTO = AgendaResponseDTO.builder().id(id).title("Test Agenda").build();
 
         when(agendaRepository.findById(id)).thenReturn(Optional.of(agenda));
@@ -95,13 +93,9 @@ class AgendaServiceTest {
     @Test
     void openSession_ShouldOpenSession_WhenStatusIsCreated() {
         String id = "1";
-        Agenda agenda = new Agenda("Test Agenda");
-        agenda.setId(id);
-        agenda.setStatus(AgendaStatus.CREATED);
+        Agenda agenda = Agenda.builder().id(id).title("Test Agenda").status(AgendaStatus.CREATED).build();
         
-        Agenda savedAgenda = new Agenda("Test Agenda");
-        savedAgenda.setId(id);
-        savedAgenda.setStatus(AgendaStatus.OPEN);
+        Agenda savedAgenda = Agenda.builder().id(id).title("Test Agenda").status(AgendaStatus.OPEN).sessionEndsAt(OffsetDateTime.now().plusMinutes(1)).build();
         
         AgendaResponseDTO responseDTO = AgendaResponseDTO.builder().id(id).status(AgendaStatus.OPEN).build();
 
@@ -119,9 +113,7 @@ class AgendaServiceTest {
     @Test
     void openSession_ShouldThrowBadRequest_WhenStatusIsOpen() {
         String id = "1";
-        Agenda agenda = new Agenda("Test Agenda");
-        agenda.setId(id);
-        agenda.setStatus(AgendaStatus.OPEN);
+        Agenda agenda = Agenda.builder().id(id).status(AgendaStatus.OPEN).build();
 
         when(agendaRepository.findById(id)).thenReturn(Optional.of(agenda));
 
@@ -132,9 +124,7 @@ class AgendaServiceTest {
     @Test
     void openSession_ShouldThrowBadRequest_WhenStatusIsClosed() {
         String id = "1";
-        Agenda agenda = new Agenda("Test Agenda");
-        agenda.setId(id);
-        agenda.setStatus(AgendaStatus.CLOSED);
+        Agenda agenda = Agenda.builder().id(id).status(AgendaStatus.CLOSED).build();
 
         when(agendaRepository.findById(id)).thenReturn(Optional.of(agenda));
 

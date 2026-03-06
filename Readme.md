@@ -38,22 +38,24 @@ A aplicação foi contentorizada para facilitar a execução. Todo o ambiente (b
    cd sicred-challenge
    ```
 
-2. **Inicie os contentores da aplicação:**
-   Na raiz do projeto (onde o ficheiro `docker-compose.yml` está localizado), execute o seguinte comando para construir e iniciar os serviços em segundo plano:
+2. **Inicie a infraestrutura e as APIs:**
+   Na raiz do projeto, execute o comando para construir e iniciar os serviços em segundo plano:
    ```bash
    docker compose up --build -d
    ```
+   *Aguarde alguns instantes para que todos os serviços (Kafka, Mongo, APIs) estejam totalmente operacionais.*
 
-3. **Verifique se os serviços estão a correr:**
+3. **Execute o Teste de Carga (Opcional):**
+   Para simular um cenário real com criação de pauta, abertura de sessão e envio massivo de votos (1000 votos concorrentes), execute:
    ```bash
-   docker compose ps
+   docker compose --profile test up load-test
    ```
+   *Este script irá criar uma pauta, abrir a sessão por 1 minuto, enviar os votos e exibir o relatório de performance.*
 
-4. **Acompanhe os registos/logs (opcional):**
-   Para acompanhar a inicialização da API e do Consumer:
-   ```bash
-   docker compose logs -f
-   ```
+4. **Verifique o Resultado:**
+   Após o término da sessão de votação (1 minuto), o sistema consolidará os votos automaticamente. Você pode consultar o resultado final acessando a URL exibida no final do log do teste de carga, por exemplo:
+   
+   `http://localhost:8080/agendas/{id-da-pauta}/result`
 
 ## 📚 Documentação da API
 

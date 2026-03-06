@@ -1,5 +1,7 @@
 package com.challenge.core.controllers;
 
+import com.challenge.core.exception.ErrorResponse;
+import com.challenge.core.exception.NotFoundException;
 import com.challenge.core.model.VotingResult;
 import com.challenge.core.repositories.VotingResultRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +28,6 @@ public class VotingResultController {
     public ResponseEntity<VotingResult> getResult(@PathVariable String agendaId) {
         Optional<VotingResult> result = votingResultRepository.findByAgendaId(agendaId);
         return result.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(() -> new NotFoundException("Resultado ainda não foi gerado para a pauta com ID: " + agendaId));
     }
 }

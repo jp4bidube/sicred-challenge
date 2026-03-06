@@ -4,11 +4,31 @@ import concurrent.futures
 import time
 import json
 import os
+import sys
 
 # Configurações
 API_URL = os.getenv("API_URL", "http://localhost:8080")
 TOTAL_VOTES = 1000
 CONCURRENCY = 50    # Quantidade de threads simultâneas
+
+def wait_for_api():
+    """Espera a API estar disponível antes de iniciar."""
+    print(f"Waiting for API at {API_URL}...")
+    retries = 30
+    for i in range(retries):
+        try:
+            response = requests.get(f"{API_URL}/agendas")
+            if response.status_code == 200:
+                print("API is ready!")
+                return
+        except requests.exceptions.ConnectionError:
+            pass
+
+        print(f"API not ready yet. Retrying in 2s... ({i+1}/{retries})")
+        time.sleep(2)
+
+    print("API failed to start. Exiting.")
+    sys.exit(1)
 
 def generate_cpf():
     """Gera um CPF válido para teste."""
@@ -64,6 +84,8 @@ def cast_vote(agenda_id):
         return {"status": "ERROR", "error": str(e)}
 
 def run_load_test():
+    wait_for_api()
+
     agenda_id = create_agenda()
     open_session(agenda_id)
 
@@ -97,7 +119,7 @@ def run_load_test():
                 print(r)
                 break
 
-    print(f"\nCheck results at: {API_URL}/agendas/{agenda_id}/result (wait for session to close)")
+    print(f"\nCheck results at: http:localhost:8080/agendas/{agenda_id}/result (wait for session to close)")
 
 if __name__ == "__main__":
     run_load_test()

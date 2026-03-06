@@ -11,10 +11,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -41,18 +42,21 @@ class AgendaSchedulerTest {
 
     @Test
     void closeExpiredSessions_ShouldCloseExpiredAgendas() {
-        Agenda expiredAgenda1 = new Agenda("Agenda 1");
-        expiredAgenda1.setId("1");
-        expiredAgenda1.setStatus(AgendaStatus.OPEN);
-        expiredAgenda1.setSessionEndsAt(LocalDateTime.now().minusMinutes(5));
+        Agenda expiredAgenda1 = Agenda.builder()
+                .id("1")
+                .title("Agenda 1")
+                .status(AgendaStatus.OPEN)
+                .sessionEndsAt(OffsetDateTime.now().minusMinutes(5))
+                .build();
 
-        Agenda expiredAgenda2 = new Agenda("Agenda 2");
-        expiredAgenda2.setId("2");
-        expiredAgenda2.setStatus(AgendaStatus.OPEN);
-        expiredAgenda2.setSessionEndsAt(LocalDateTime.now().minusMinutes(10));
+        Agenda expiredAgenda2 = Agenda.builder()
+                .id("2")
+                .title("Agenda 2")
+                .status(AgendaStatus.OPEN)
+                .sessionEndsAt(OffsetDateTime.now().minusMinutes(10))
+                .build();
 
         when(agendaService.findOpenSessionsExpired()).thenReturn(Arrays.asList(expiredAgenda1, expiredAgenda2));
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations); // Mock opsForValue
 
         agendaScheduler.closeExpiredSessions();
 
@@ -80,14 +84,16 @@ class AgendaSchedulerTest {
 
     @Test
     void closeExpiredSessions_ShouldHandleException_WhenSavingFails() {
-        Agenda expiredAgenda = new Agenda("Agenda 1");
-        expiredAgenda.setId("1");
-        expiredAgenda.setStatus(AgendaStatus.OPEN);
-        expiredAgenda.setSessionEndsAt(LocalDateTime.now().minusMinutes(5));
+        Agenda expiredAgenda = Agenda.builder()
+                .id("1")
+                .title("Agenda 1")
+                .status(AgendaStatus.OPEN)
+                .sessionEndsAt(OffsetDateTime.now().minusMinutes(5))
+                .build();
 
         when(agendaService.findOpenSessionsExpired()).thenReturn(Collections.singletonList(expiredAgenda));
         doThrow(new RuntimeException("DB error")).when(agendaRepository).save(any(Agenda.class));
-        when(redisTemplate.opsForValue()).thenReturn(valueOperations); // Mock opsForValue
+        // Removed unnecessary stubbing for redisTemplate
 
         agendaScheduler.closeExpiredSessions();
 
