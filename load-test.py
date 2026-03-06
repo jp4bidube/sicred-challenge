@@ -3,10 +3,11 @@ import random
 import concurrent.futures
 import time
 import json
+import os
 
 # Configurações
-API_URL = "http://localhost:8080"
-TOTAL_VOTES = 1000  # Quantidade de votos a simular
+API_URL = os.getenv("API_URL", "http://localhost:8080")
+TOTAL_VOTES = 1000
 CONCURRENCY = 50    # Quantidade de threads simultâneas
 
 def generate_cpf():

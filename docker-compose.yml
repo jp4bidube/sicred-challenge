@@ -79,6 +79,7 @@ services:
       - SPRING_DATA_MONGODB_URI=mongodb://admin:123@mongodb:27017/sicred?authSource=admin
       - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
       - USER_API_URL=http://user-api:8082
+      - TZ=America/Sao_Paulo
     depends_on:
       - mongodb
       - kafka
@@ -90,3 +91,18 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8082:8082"
+    environment:
+      - TZ=America/Sao_Paulo
+
+  load-test:
+    image: python:3.10-slim
+    volumes:
+      - ./load-test.py:/app/load-test.py
+    working_dir: /app
+    environment:
+      - API_URL=http://core-api:8080
+    command: sh -c "pip install requests && python load-test.py"
+    profiles:
+      - test
+    depends_on:
+      - core-api
